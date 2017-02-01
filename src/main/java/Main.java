@@ -17,6 +17,7 @@ import org.jscience.physics.model.RelativisticModel;
 import org.jscience.physics.amount.Amount;
 
 import com.heroku.sdk.jdbc.DatabaseUrl;
+import java.util.Random;
 
 public class Main {
 
@@ -69,10 +70,11 @@ public class Main {
         Map<String, Object> attributes = new HashMap<>();
         try {
             dbConnection = DatabaseUrl.extract().getConnection();
-            
+            Random rngesus = new Random();
             Statement sqlStatement = dbConnection.createStatement();
+            int randomNumber = rngesus.nextInt(10);
             sqlStatement.executeUpdate("CREATE TABLE IF NOT EXISTS randNums (num integer)");
-            sqlStatement.executeUpdate("INSERT INTO randNums VALUES (4)");
+            sqlStatement.executeUpdate("INSERT INTO randNums VALUES (" + randomNumber + ")");
             ResultSet rs = sqlStatement.executeQuery("SELECT num FROM randNums");
             
             ArrayList<String> output = new ArrayList<>();
