@@ -63,6 +63,36 @@ public class Main {
         if (connection != null) try{connection.close();} catch(SQLException e){}
       }
     }, new FreeMarkerEngine());
+    
+    get("/assignment3", (req, res) -> {
+        Connection dbConnection = null;
+        Map<String, Object> attributes = new HashMap<>();
+        try {
+            dbConnection = DatabaseUrl.extract().getConnection();
+            
+            Statement sqlStatement = dbConnection.CreateStatement();
+            sqlStatement.executeUpdate("CREATE TABLE IF NOT EXISTS randNums (num integer)");
+            sqlStatement.executeUpdate("INSERT INTO randNums VALUES (4)");
+            ResultSet rs = sqlStatement.executeQuery("SELECT num FROM randNums");
+            
+            ArrayList<String> output = new ArrayList<>();
+            while (rs.next()) {
+                output.add("Guaranteed Random(tm) Number: " + rs.getInt("num"));
+            }
+            
+            attributes.put("results", output);
+            return new ModelAndView(attributes, "db.ftl");
+        } catch (Exception e) {
+            attributes.put("message", "There was an error: " + e);
+            return new ModelAndView(attributes, "error.ftl");
+        } finally {
+            if (dbConnection != null) {
+                try {
+                    dbConnection.close();
+                } catch (SQLException e) {}
+            }
+        }
+    }, new FreeMarkerEngine());
 
   }
 
