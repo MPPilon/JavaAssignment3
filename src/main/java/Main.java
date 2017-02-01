@@ -70,7 +70,7 @@ public class Main {
         try {
             dbConnection = DatabaseUrl.extract().getConnection();
             
-            Statement sqlStatement = dbConnection.CreateStatement();
+            Statement sqlStatement = dbConnection.createStatement();
             sqlStatement.executeUpdate("CREATE TABLE IF NOT EXISTS randNums (num integer)");
             sqlStatement.executeUpdate("INSERT INTO randNums VALUES (4)");
             ResultSet rs = sqlStatement.executeQuery("SELECT num FROM randNums");
